@@ -67,8 +67,8 @@ export function WaitlistForm({
         required
         className={`h-12 flex-1 rounded-lg px-4 ${
           light
-            ? "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus-visible:ring-indigo-500"
-            : "border-white/10 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-indigo-500"
+            ? "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus-visible:ring-slate-500"
+            : "border-white/10 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-slate-500"
         }`}
       />
       <Button

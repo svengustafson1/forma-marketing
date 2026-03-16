@@ -9,7 +9,7 @@ function Navbar() {
     <nav className="fixed top-0 z-50 w-full border-b border-slate-100 bg-white/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <span className="text-xl font-bold tracking-tight text-slate-900" style={{ letterSpacing: "-0.03em" }}>
-          forma<span className="text-indigo-500">.</span>
+          forma<span className="text-slate-900">.</span>
         </span>
         <a
           href="#waitlist"
@@ -36,14 +36,14 @@ function Hero() {
       />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5 text-sm text-indigo-600">
-          <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" />
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-sm text-slate-700">
+          <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-pulse" />
           Coming soon
         </div>
 
         <h1 className="text-5xl font-bold leading-tight tracking-tight text-slate-900 sm:text-6xl lg:text-7xl" style={{ letterSpacing: "-0.03em" }}>
           The CRM That{" "}
-          <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
             Builds Itself
           </span>
         </h1>
@@ -104,9 +104,9 @@ function HowItWorks() {
         <div className="mt-20 grid gap-12 md:grid-cols-3">
           {steps.map((step) => (
             <div key={step.number}>
-              <span className="text-sm font-mono font-semibold text-indigo-500">{step.number}</span>
+              <span className="text-sm font-mono font-semibold text-slate-900">{step.number}</span>
               <h3 className="mt-3 text-xl font-semibold text-slate-900">{step.title}</h3>
-              <div className="mt-3 h-px w-12 bg-indigo-200" />
+              <div className="mt-3 h-px w-12 bg-slate-200" />
               <p className="mt-4 leading-relaxed text-slate-500">{step.description}</p>
             </div>
           ))}
@@ -160,9 +160,9 @@ function WhyForma() {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="rounded-2xl border border-slate-100 bg-white p-8 shadow-sm transition hover:border-indigo-100 hover:shadow-md"
+              className="rounded-2xl border border-slate-100 bg-white p-8 shadow-sm transition hover:border-slate-200 hover:shadow-md"
             >
-              <div className="mb-1 h-1 w-8 rounded-full bg-indigo-400" />
+              <div className="mb-1 h-1 w-8 rounded-full bg-slate-300" />
               <h3 className="mt-4 text-base font-semibold text-slate-900">{feature.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-500">{feature.description}</p>
             </div>
@@ -207,8 +207,8 @@ function Comparison() {
             </ul>
           </div>
 
-          <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-8">
-            <h3 className="mb-6 text-xs font-semibold text-indigo-500 uppercase tracking-widest">Forma</h3>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8">
+            <h3 className="mb-6 text-xs font-semibold text-slate-900 uppercase tracking-widest">Forma</h3>
             <ul className="space-y-4">
               {[
                 "Ready in minutes, not months",
@@ -218,7 +218,7 @@ function Comparison() {
                 "The tool adapts to your process",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-slate-700 text-sm">
-                  <svg className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="mt-0.5 h-4 w-4 shrink-0 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                   {item}
@@ -239,7 +239,7 @@ function FinalCTA() {
         <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.03em" }}>
           No templates. No compromise.
           <br />
-          <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
             Just your CRM, built from scratch.
           </span>
         </h2>
@@ -259,7 +259,7 @@ function Footer() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <span className="text-lg font-bold tracking-tight text-slate-900" style={{ letterSpacing: "-0.03em" }}>
-            forma<span className="text-indigo-500">.</span>
+            forma<span className="text-slate-900">.</span>
           </span>
           <p className="text-sm text-slate-400">
             &copy; {new Date().getFullYear()} Forma. The CRM that builds itself around you.

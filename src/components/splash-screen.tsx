@@ -244,7 +244,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
           }}
         >
           forma
-          <span style={{ color: "#818cf8" }}>.</span>
+          <span style={{ color: "#111111" }}>.</span>
         </div>
         <div
           style={{
