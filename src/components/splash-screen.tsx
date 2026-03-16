@@ -1,175 +1,260 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-
-// Grid positions that spell/form the diamond shape
-const GRID_COLS = 9;
-const GRID_ROWS = 7;
-const CELL = 28;
-const GAP = 5;
-
-// Which cells are "lit" — forms a diamond/cross shape
-const LIT: [number, number][] = [
-  [4,0],
-  [3,1],[4,1],[5,1],
-  [2,2],[3,2],[4,2],[5,2],[6,2],
-  [1,3],[2,3],[3,3],[4,3],[5,3],[6,3],[7,3],
-  [2,4],[3,4],[4,4],[5,4],[6,4],
-  [3,5],[4,5],[5,5],
-  [4,6],
-];
-
-function gridX(col: number) { return col * (CELL + GAP); }
-function gridY(row: number) { return row * (CELL + GAP); }
-
-const TOTAL_W = GRID_COLS * (CELL + GAP) - GAP;
-const TOTAL_H = GRID_ROWS * (CELL + GAP) - GAP;
-
-interface Tile {
-  col: number;
-  row: number;
-  startX: number;
-  startY: number;
-  delay: number;
-}
+import { useEffect, useRef } from "react";
 
 export function SplashScreen({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState<"assemble" | "hold" | "out">("assemble");
-  const [tiles, setTiles] = useState<Tile[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const splashRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Generate tiles with random start positions
-    const generated = LIT.map(([col, row], i) => ({
-      col,
-      row,
-      startX: (Math.random() - 0.5) * 320,
-      startY: (Math.random() - 0.5) * 320,
-      delay: i * 35 + Math.random() * 60,
-    }));
-    // Shuffle so they don't all assemble in order
-    generated.sort(() => Math.random() - 0.5);
-    generated.forEach((t, i) => { t.delay = i * 40; });
-    setTiles(generated);
-  }, []);
+    const canvas = canvasRef.current;
+    const logo = logoRef.current;
+    const splash = splashRef.current;
+    if (!canvas || !logo || !splash) return;
 
-  useEffect(() => {
-    const lastDelay = LIT.length * 40 + 100;
-    const t1 = setTimeout(() => setPhase("hold"), lastDelay + 200);
-    const t2 = setTimeout(() => setPhase("out"), lastDelay + 1200);
-    const t3 = setTimeout(() => onComplete(), lastDelay + 1900);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    const ctx = canvas.getContext("2d")!;
+
+    const INDIGO = "rgba(99,102,241,";
+    const VIOLET = "rgba(139,92,246,";
+    const CONNECT_D = 140;
+    const N_PTS = 52;
+
+    let W: number, H: number;
+    let pts: any[];
+    let phase: string;
+    let frame: number;
+    let raf: number;
+    let pulseNode: any = null;
+
+    function resize() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+
+    function randPt() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: 1.5 + Math.random() * 2,
+        a: 0,
+        born: frame,
+        isPulse: false,
+      };
+    }
+
+    function init() {
+      resize();
+      pts = [];
+      phase = "spawn";
+      frame = 0;
+      pulseNode = null;
+
+      for (let i = 0; i < N_PTS; i++) {
+        const p = randPt();
+        p.born = Math.floor(i * (100 / N_PTS));
+        p.a = 0;
+        pts.push(p);
+      }
+    }
+
+    function drawEdges() {
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < CONNECT_D) {
+            const strength =
+              (1 - d / CONNECT_D) * Math.min(pts[i].a, pts[j].a);
+            ctx.strokeStyle = INDIGO + strength * 0.45 + ")";
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Pulse node connections
+      if (pulseNode && pulseNode.a > 0) {
+        for (let i = 0; i < pts.length; i++) {
+          const dx = pts[i].x - pulseNode.x;
+          const dy = pts[i].y - pulseNode.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < CONNECT_D * 1.5) {
+            const strength =
+              (1 - d / (CONNECT_D * 1.5)) * pulseNode.a * pts[i].a;
+            ctx.strokeStyle = VIOLET + strength * 0.7 + ")";
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pulseNode.x, pulseNode.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function drawDots() {
+      for (const p of pts) {
+        if (p.a <= 0) continue;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = INDIGO + p.a * 0.85 + ")";
+        ctx.fill();
+      }
+
+      if (pulseNode && pulseNode.a > 0) {
+        // Glow ring
+        const glow = ctx.createRadialGradient(
+          pulseNode.x, pulseNode.y, 0,
+          pulseNode.x, pulseNode.y, 18
+        );
+        glow.addColorStop(0, VIOLET + pulseNode.a * 0.6 + ")");
+        glow.addColorStop(1, "rgba(139,92,246,0)");
+        ctx.beginPath();
+        ctx.arc(pulseNode.x, pulseNode.y, 18, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(pulseNode.x, pulseNode.y, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = VIOLET + pulseNode.a + ")";
+        ctx.fill();
+      }
+    }
+
+    function tick() {
+      frame++;
+      ctx.clearRect(0, 0, W, H);
+
+      // Fade nodes in
+      for (const p of pts) {
+        const age = frame - p.born;
+        if (age > 0) p.a = Math.min(1, p.a + 0.04);
+
+        // Drift
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Soft bounce
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      }
+
+      if (phase === "spawn" && frame > 120) {
+        phase = "connected";
+        logo.style.opacity = "1";
+
+        // Introduce a special pulse node after a beat
+        setTimeout(() => {
+          pulseNode = randPt();
+          pulseNode.a = 0;
+          pulseNode.isPulse = true;
+        }, 400);
+      }
+
+      if (pulseNode && pulseNode.a < 1) {
+        pulseNode.a = Math.min(1, pulseNode.a + 0.05);
+        pulseNode.x += pulseNode.vx;
+        pulseNode.y += pulseNode.vy;
+        if (pulseNode.x < 0 || pulseNode.x > W) pulseNode.vx *= -1;
+        if (pulseNode.y < 0 || pulseNode.y > H) pulseNode.vy *= -1;
+      } else if (pulseNode) {
+        pulseNode.x += pulseNode.vx;
+        pulseNode.y += pulseNode.vy;
+        if (pulseNode.x < 0 || pulseNode.x > W) pulseNode.vx *= -1;
+        if (pulseNode.y < 0 || pulseNode.y > H) pulseNode.vy *= -1;
+      }
+
+      drawEdges();
+      drawDots();
+
+      raf = requestAnimationFrame(tick);
+    }
+
+    init();
+    raf = requestAnimationFrame(tick);
+
+    // Fade out after 2.8s
+    const fadeTimer = setTimeout(() => {
+      splash.style.transition = "opacity 0.8s ease";
+      splash.style.opacity = "0";
+      setTimeout(() => onComplete(), 850);
+    }, 2800);
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(fadeTimer);
+      resizeObserver.disconnect();
+    };
   }, [onComplete]);
-
-  const isLit = (col: number, row: number) =>
-    LIT.some(([c, r]) => c === col && r === row);
 
   return (
     <div
-      ref={containerRef}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+      ref={splashRef}
       style={{
-        background: "#ffffff",
-        opacity: phase === "out" ? 0 : 1,
-        transition: phase === "out" ? "opacity 0.7s ease-in-out" : "none",
-        pointerEvents: phase === "out" ? "none" : "all",
+        position: "fixed",
+        inset: 0,
+        background: "#06070f",
+        zIndex: 9999,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
       }}
     >
-      {/* Self-assembling grid */}
-      <div style={{ position: "relative", width: TOTAL_W, height: TOTAL_H }}>
-        {/* Background ghost grid */}
-        {Array.from({ length: GRID_ROWS }, (_, row) =>
-          Array.from({ length: GRID_COLS }, (_, col) => (
-            <div
-              key={`bg-${col}-${row}`}
-              style={{
-                position: "absolute",
-                left: gridX(col),
-                top: gridY(row),
-                width: CELL,
-                height: CELL,
-                borderRadius: 5,
-                background: isLit(col, row) ? "transparent" : "rgba(0,0,0,0.035)",
-                border: isLit(col, row) ? "none" : "1px solid rgba(0,0,0,0.06)",
-              }}
-            />
-          ))
-        )}
-
-        {/* Assembling tiles */}
-        {tiles.map((tile, i) => {
-          const targetX = gridX(tile.col);
-          const targetY = gridY(tile.row);
-          return (
-            <div
-              key={`tile-${i}`}
-              style={{
-                position: "absolute",
-                width: CELL,
-                height: CELL,
-                borderRadius: 5,
-                background:
-                  phase === "hold" || phase === "out"
-                    ? "rgba(0,0,0,0.88)"
-                    : "rgba(0,0,0,0.82)",
-                boxShadow:
-                  phase === "hold" || phase === "out"
-                    ? "0 2px 8px rgba(0,0,0,0.12)"
-                    : "none",
-                transform:
-                  phase === "assemble"
-                    ? `translate(${tile.startX + targetX}px, ${tile.startY + targetY}px) scale(0.4) rotate(${(Math.random() - 0.5) * 40}deg)`
-                    : `translate(${targetX}px, ${targetY}px) scale(1) rotate(0deg)`,
-                opacity: phase === "assemble" ? 0 : 1,
-                transition: `transform 0.55s cubic-bezier(0.22,1,0.36,1) ${tile.delay}ms, opacity 0.3s ease-out ${tile.delay}ms, box-shadow 0.4s ease`,
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Wordmark */}
-      <div
+      <canvas
+        ref={canvasRef}
         style={{
-          marginTop: 28,
-          opacity: phase === "hold" || phase === "out" ? 1 : 0,
-          transform: phase === "hold" || phase === "out" ? "translateY(0)" : "translateY(8px)",
-          transition: "opacity 0.45s ease-out, transform 0.45s ease-out",
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      />
+      <div
+        ref={logoRef}
+        style={{
+          position: "relative",
+          zIndex: 2,
+          textAlign: "center",
+          opacity: 0,
+          transition: "opacity 0.7s ease",
         }}
       >
-        <span
+        <div
           style={{
-            fontSize: 26,
-            fontWeight: 700,
-            letterSpacing: "-0.04em",
-            color: "#0f0f0f",
+            fontSize: "2.4rem",
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            color: "#fff",
             fontFamily: "inherit",
           }}
         >
           forma
-          <span style={{ color: "#6366f1" }}>.</span>
-        </span>
-      </div>
-
-      {/* Subtle tagline */}
-      <div
-        style={{
-          marginTop: 8,
-          opacity: phase === "hold" ? 0.5 : 0,
-          transition: "opacity 0.4s ease-out 0.2s",
-        }}
-      >
-        <p
+          <span style={{ color: "#818cf8" }}>.</span>
+        </div>
+        <div
           style={{
-            fontSize: 11,
+            fontSize: "0.8rem",
+            color: "rgba(255,255,255,0.35)",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#888",
+            marginTop: "0.5rem",
             fontFamily: "inherit",
           }}
         >
           assembling your workspace
-        </p>
+        </div>
       </div>
     </div>
   );
