@@ -21,10 +21,12 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     const N_PTS = 52;
 
     let W: number, H: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let pts: any[];
     let phase: string;
     let frame: number;
     let raf: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let pulseNode: any = null;
 
     function resize() {
