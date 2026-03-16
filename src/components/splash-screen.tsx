@@ -39,8 +39,8 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       return {
         x: Math.random() * W,
         y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
         r: 1.5 + Math.random() * 2,
         a: 0,
         born: frame,
@@ -57,7 +57,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
 
       for (let i = 0; i < N_PTS; i++) {
         const p = randPt();
-        p.born = Math.floor(i * (100 / N_PTS));
+        p.born = Math.floor(i * (160 / N_PTS));
         p.a = 0;
         pts.push(p);
       }
@@ -149,7 +149,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
         if (p.y < 0 || p.y > H) p.vy *= -1;
       }
 
-      if (phase === "spawn" && frame > 120) {
+      if (phase === "spawn" && frame > 180) {
         phase = "connected";
         logo!.style.opacity = "1";
 
@@ -188,7 +188,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       splash!.style.transition = "opacity 0.8s ease";
       splash!.style.opacity = "0";
       setTimeout(() => onComplete(), 850);
-    }, 2800);
+    }, 5000);
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(canvas);

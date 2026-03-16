@@ -4,7 +4,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function WaitlistForm({ className = "" }: { className?: string }) {
+export function WaitlistForm({
+  className = "",
+  light = false,
+}: {
+  className?: string;
+  light?: boolean;
+}) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -37,7 +43,11 @@ export function WaitlistForm({ className = "" }: { className?: string }) {
   if (status === "success") {
     return (
       <div className={`text-center ${className}`}>
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-emerald-400">
+        <div className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium ${
+          light
+            ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
+            : "border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+        }`}>
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -55,17 +65,27 @@ export function WaitlistForm({ className = "" }: { className?: string }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="h-12 flex-1 rounded-lg border-white/10 bg-white/5 px-4 text-white placeholder:text-white/40 focus-visible:ring-blue-500"
+        className={`h-12 flex-1 rounded-lg px-4 ${
+          light
+            ? "border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus-visible:ring-indigo-500"
+            : "border-white/10 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-indigo-500"
+        }`}
       />
       <Button
         type="submit"
         disabled={status === "loading"}
-        className="h-12 rounded-lg bg-blue-600 px-8 font-semibold text-white hover:bg-blue-500 disabled:opacity-50"
+        className={`h-12 rounded-lg px-8 font-semibold disabled:opacity-50 ${
+          light
+            ? "bg-slate-900 text-white hover:bg-slate-700"
+            : "bg-indigo-600 text-white hover:bg-indigo-500"
+        }`}
       >
         {status === "loading" ? "Joining..." : "Join the waitlist"}
       </Button>
       {status === "error" && (
-        <p className="text-sm text-red-400 sm:absolute sm:mt-14">{errorMsg}</p>
+        <p className={`text-sm sm:absolute sm:mt-14 ${light ? "text-red-500" : "text-red-400"}`}>
+          {errorMsg}
+        </p>
       )}
     </form>
   );
