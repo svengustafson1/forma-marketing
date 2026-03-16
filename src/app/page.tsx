@@ -1,4 +1,8 @@
+"use client";
+
+import { useState, useCallback } from "react";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { SplashScreen } from "@/components/splash-screen";
 
 function GlowOrb({ className }: { className: string }) {
   return <div className={`absolute rounded-full blur-[120px] opacity-20 ${className}`} />;
@@ -316,15 +320,26 @@ function Footer() {
 }
 
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(true);
+  const handleSplashComplete = useCallback(() => setShowSplash(false), []);
+
   return (
-    <main>
-      <Navbar />
-      <Hero />
-      <HowItWorks />
-      <WhyForma />
-      <Comparison />
-      <FinalCTA />
-      <Footer />
-    </main>
+    <>
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+      <main
+        style={{
+          opacity: showSplash ? 0 : 1,
+          transition: "opacity 0.5s ease-in-out",
+        }}
+      >
+        <Navbar />
+        <Hero />
+        <HowItWorks />
+        <WhyForma />
+        <Comparison />
+        <FinalCTA />
+        <Footer />
+      </main>
+    </>
   );
 }
