@@ -234,20 +234,20 @@ function Comparison() {
 
 function FinalCTA() {
   return (
-    <section className="bg-slate-900 py-32">
+    <section className="bg-slate-50 py-32">
       <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.03em" }}>
+        <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.03em" }}>
           No templates. No compromise.
           <br />
-          <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
             Just your CRM, built from scratch.
           </span>
         </h2>
-        <p className="mt-6 text-lg text-slate-400">
+        <p className="mt-6 text-lg text-slate-500">
           Join the waitlist and be first to experience a CRM that assembles
           itself around how you work.
         </p>
-        <WaitlistForm className="mx-auto mt-10 max-w-lg" />
+        <WaitlistForm className="mx-auto mt-10 max-w-lg" light />
       </div>
     </section>
   );
