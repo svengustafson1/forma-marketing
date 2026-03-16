@@ -13,7 +13,8 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     const splash = splashRef.current;
     if (!canvas || !logo || !splash) return;
 
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     const INDIGO = "rgba(99,102,241,";
     const VIOLET = "rgba(139,92,246,";
@@ -30,8 +31,8 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     let pulseNode: any = null;
 
     function resize() {
-      W = canvas.width = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
+      W = canvas!.width = canvas!.offsetWidth;
+      H = canvas!.height = canvas!.offsetHeight;
     }
 
     function randPt() {
@@ -71,12 +72,12 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
           if (d < CONNECT_D) {
             const strength =
               (1 - d / CONNECT_D) * Math.min(pts[i].a, pts[j].a);
-            ctx.strokeStyle = INDIGO + strength * 0.45 + ")";
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.stroke();
+            ctx!.strokeStyle = INDIGO + strength * 0.45 + ")";
+            ctx!.lineWidth = 0.6;
+            ctx!.beginPath();
+            ctx!.moveTo(pts[i].x, pts[i].y);
+            ctx!.lineTo(pts[j].x, pts[j].y);
+            ctx!.stroke();
           }
         }
       }
@@ -90,12 +91,12 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
           if (d < CONNECT_D * 1.5) {
             const strength =
               (1 - d / (CONNECT_D * 1.5)) * pulseNode.a * pts[i].a;
-            ctx.strokeStyle = VIOLET + strength * 0.7 + ")";
-            ctx.lineWidth = 0.8;
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pulseNode.x, pulseNode.y);
-            ctx.stroke();
+            ctx!.strokeStyle = VIOLET + strength * 0.7 + ")";
+            ctx!.lineWidth = 0.8;
+            ctx!.beginPath();
+            ctx!.moveTo(pts[i].x, pts[i].y);
+            ctx!.lineTo(pulseNode.x, pulseNode.y);
+            ctx!.stroke();
           }
         }
       }
@@ -104,35 +105,35 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     function drawDots() {
       for (const p of pts) {
         if (p.a <= 0) continue;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = INDIGO + p.a * 0.85 + ")";
-        ctx.fill();
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx!.fillStyle = INDIGO + p.a * 0.85 + ")";
+        ctx!.fill();
       }
 
       if (pulseNode && pulseNode.a > 0) {
         // Glow ring
-        const glow = ctx.createRadialGradient(
+        const glow = ctx!.createRadialGradient(
           pulseNode.x, pulseNode.y, 0,
           pulseNode.x, pulseNode.y, 18
         );
         glow.addColorStop(0, VIOLET + pulseNode.a * 0.6 + ")");
         glow.addColorStop(1, "rgba(139,92,246,0)");
-        ctx.beginPath();
-        ctx.arc(pulseNode.x, pulseNode.y, 18, 0, Math.PI * 2);
-        ctx.fillStyle = glow;
-        ctx.fill();
+        ctx!.beginPath();
+        ctx!.arc(pulseNode.x, pulseNode.y, 18, 0, Math.PI * 2);
+        ctx!.fillStyle = glow;
+        ctx!.fill();
 
-        ctx.beginPath();
-        ctx.arc(pulseNode.x, pulseNode.y, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = VIOLET + pulseNode.a + ")";
-        ctx.fill();
+        ctx!.beginPath();
+        ctx!.arc(pulseNode.x, pulseNode.y, 3.5, 0, Math.PI * 2);
+        ctx!.fillStyle = VIOLET + pulseNode.a + ")";
+        ctx!.fill();
       }
     }
 
     function tick() {
       frame++;
-      ctx.clearRect(0, 0, W, H);
+      ctx!.clearRect(0, 0, W, H);
 
       // Fade nodes in
       for (const p of pts) {
@@ -150,7 +151,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
 
       if (phase === "spawn" && frame > 120) {
         phase = "connected";
-        logo.style.opacity = "1";
+        logo!.style.opacity = "1";
 
         // Introduce a special pulse node after a beat
         setTimeout(() => {
@@ -184,8 +185,8 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
 
     // Fade out after 2.8s
     const fadeTimer = setTimeout(() => {
-      splash.style.transition = "opacity 0.8s ease";
-      splash.style.opacity = "0";
+      splash!.style.transition = "opacity 0.8s ease";
+      splash!.style.opacity = "0";
       setTimeout(() => onComplete(), 850);
     }, 2800);
 
