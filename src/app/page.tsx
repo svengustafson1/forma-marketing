@@ -54,32 +54,61 @@ function Navbar() {
 }
 
 function OrbitalVisual() {
+  const signals = ["Email", "Website forms", "Leads", "Calendar", "Spreadsheets", "Existing tools"];
+  const workspaces = ["Owner", "Sales", "Ops", "Finance"];
+
   return (
-    <div className="relative mx-auto mt-16 h-[420px] max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-4 shadow-2xl shadow-cyan-950/30 lg:mt-0">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,211,238,0.24),transparent_34%),radial-gradient(circle_at_80%_10%,rgba(168,85,247,0.16),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
-      <div className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/30 bg-slate-950/80 p-6 shadow-[0_0_90px_rgba(34,211,238,0.24)]">
-        <div className="flex h-full flex-col items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-center">
-          <span className="text-xs uppercase tracking-[0.35em] text-cyan-200/80">Company brain</span>
-          <span className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-white">Forma</span>
+    <div className="relative mx-auto mt-16 w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#080a12]/85 p-4 shadow-2xl shadow-cyan-950/30 backdrop-blur lg:mt-0">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.18),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(217,70,239,0.12),transparent_28%)]" />
+      <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)] [background-size:44px_44px]" />
+
+      <div className="relative grid gap-4 lg:grid-cols-[.82fr_1fr_.82fr] lg:items-stretch">
+        <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4">
+          <p className="mb-4 text-xs font-mono uppercase tracking-[0.22em] text-slate-500">Signals in</p>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+            {signals.map((signal) => (
+              <div key={signal} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/55 px-3 py-3 text-sm text-slate-300">
+                <span className="h-2 w-2 rounded-full bg-cyan-300/80 shadow-[0_0_14px_rgba(103,232,249,.55)]" />
+                {signal}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      {[
-        ["Email", "left-[8%] top-[16%]"],
-        ["Website", "right-[10%] top-[18%]"],
-        ["Lead sources", "left-[12%] bottom-[18%]"],
-        ["Calendar", "right-[14%] bottom-[16%]"],
-        ["Spreadsheets", "left-[39%] top-[7%]"],
-        ["Tools", "left-[42%] bottom-[8%]"],
-      ].map(([label, pos]) => (
-        <div key={label} className={`absolute ${pos} rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-200 shadow-xl backdrop-blur`}>
-          <div className="mb-2 h-1 w-10 rounded-full bg-gradient-to-r from-cyan-300 to-fuchsia-300" />
-          {label}
+
+        <div className="relative overflow-hidden rounded-[1.35rem] border border-cyan-200/15 bg-slate-950/80 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,.08)]">
+          <div className="absolute inset-x-8 top-1/2 hidden h-px bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent lg:block" />
+          <div className="relative mx-auto flex min-h-[300px] max-w-sm flex-col items-center justify-center text-center">
+            <div className="absolute h-64 w-64 rounded-full border border-white/10" />
+            <div className="absolute h-44 w-44 rounded-full border border-cyan-200/20 shadow-[0_0_90px_rgba(34,211,238,0.16)]" />
+            <div className="relative rounded-full border border-cyan-200/25 bg-[#070912] p-5 shadow-2xl shadow-cyan-950/30">
+              <div className="flex h-36 w-36 flex-col items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
+                <span className="text-[10px] uppercase tracking-[0.32em] text-cyan-200/80">Architect</span>
+                <span className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-white">Forma</span>
+              </div>
+            </div>
+          </div>
+          <div className="relative rounded-2xl border border-white/10 bg-black/35 p-4 text-sm leading-6 text-slate-300 backdrop-blur">
+            <span className="font-medium text-white">Preview generated:</span> baseline objects, permissions, approval rules, and role workspaces are ready for review.
+          </div>
         </div>
-      ))}
-      <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent" />
-      <div className="absolute inset-y-8 left-1/2 w-px bg-gradient-to-b from-transparent via-fuchsia-300/30 to-transparent" />
-      <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/10 bg-black/35 p-4 text-sm text-slate-300 backdrop-blur">
-        <span className="font-medium text-white">Forma Architect:</span> “I found three lead paths, two project delivery patterns, and a recurring warranty workflow. Want me to build the baseline and preview role workspaces?”
+
+        <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4">
+          <p className="mb-4 text-xs font-mono uppercase tracking-[0.22em] text-slate-500">Workspaces out</p>
+          <div className="space-y-3">
+            {workspaces.map((workspace) => (
+              <div key={workspace} className="rounded-2xl border border-white/10 bg-slate-950/55 p-3">
+                <div className="mb-3 flex items-center justify-between text-sm text-white">
+                  <span>{workspace}</span>
+                  <span className="rounded-full bg-cyan-300/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-cyan-200">Live</span>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="h-1.5 rounded-full bg-white/15" />
+                  <div className="h-1.5 w-4/5 rounded-full bg-white/10" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -160,27 +189,42 @@ function Thesis() {
 
 function HowItWorks() {
   const steps = [
-    ["Connect", "Bring email, website forms, lead sources, spreadsheets, calendars, and existing tools. Forma reads the operational exhaust."],
+    ["Connect", "Bring email, website forms, lead sources, spreadsheets, calendars, and existing tools into one secure intake layer."],
     ["Infer", "Forma Architect identifies your nouns, stages, relationships, handoffs, exceptions, and role patterns."],
     ["Assemble", "It generates entities, fields, workflows, dashboards, and personal workspaces — then shows a preview before anything becomes real."],
     ["Evolve", "As the company changes, Forma proposes improvements with evidence. AI proposes, the system compiles, humans approve."],
   ];
 
   return (
-    <section id="how" className="bg-[#05060a] py-28 text-white">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-2xl">
-          <span className="text-xs font-mono uppercase tracking-[0.3em] text-cyan-300/80">How it works</span>
-          <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">From scattered signals to a living operating system.</h2>
+    <section id="how" className="relative overflow-hidden bg-[#05060a] py-28 text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.11),transparent_34%)]" />
+      <div className="relative mx-auto max-w-6xl px-6">
+        <div className="grid gap-10 lg:grid-cols-[.78fr_1.22fr] lg:items-end">
+          <div className="max-w-2xl">
+            <span className="text-xs font-mono uppercase tracking-[0.3em] text-cyan-300/80">How it works</span>
+            <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">From scattered signals to a living operating system.</h2>
+          </div>
+          <p className="max-w-2xl text-lg leading-8 text-slate-400 lg:justify-self-end">
+            The grid is not another dashboard to maintain. It is a controlled build pipeline: inputs become a reviewed baseline, then role-specific software stays aligned to the same truth.
+          </p>
         </div>
-        <div className="mt-14 grid gap-4 lg:grid-cols-4">
-          {steps.map(([title, body], index) => (
-            <div key={title} className="relative rounded-[1.5rem] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-6">
-              <span className="font-mono text-sm text-slate-500">0{index + 1}</span>
-              <h3 className="mt-7 text-xl font-semibold text-white">{title}</h3>
-              <p className="mt-4 text-sm leading-6 text-slate-400">{body}</p>
-            </div>
-          ))}
+
+        <div className="relative mt-16 rounded-[2rem] border border-white/10 bg-white/[0.03] p-3 shadow-2xl shadow-black/30">
+          <div className="absolute left-10 right-10 top-[4.65rem] hidden h-px bg-gradient-to-r from-cyan-300/0 via-cyan-300/35 to-fuchsia-300/0 lg:block" />
+          <div className="grid gap-3 lg:grid-cols-4">
+            {steps.map(([title, body], index) => (
+              <div key={title} className="group relative rounded-[1.45rem] border border-white/10 bg-[#080a12]/90 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,.06)] transition hover:border-cyan-200/25 hover:bg-[#0a0d17]">
+                <div className="mb-8 flex items-center justify-between">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-200/20 bg-cyan-300/10 font-mono text-sm text-cyan-100 shadow-[0_0_30px_rgba(34,211,238,.10)]">0{index + 1}</span>
+                  {index < steps.length - 1 && (
+                    <span className="hidden text-slate-600 lg:block">→</span>
+                  )}
+                </div>
+                <h3 className="text-xl font-semibold tracking-[-0.02em] text-white">{title}</h3>
+                <p className="mt-4 text-sm leading-6 text-slate-400">{body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
