@@ -5,13 +5,13 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Forma — The CRM That Builds Itself",
+  title: "Forma — Business software that builds itself around you",
   description:
-    "Tell Forma about your company. In minutes, you have a custom CRM built from scratch — entities, fields, views, and workflows designed exactly for how you work.",
+    "Forma creates one shared company brain and a custom interface for every person — adaptive business software guided by Forma Architect.",
   openGraph: {
-    title: "Forma — The CRM That Builds Itself",
+    title: "Forma — Business software that builds itself around you",
     description:
-      "Tell Forma about your company. In minutes, you have a custom CRM built from scratch.",
+      "One shared company brain. A custom interface for every person.",
     type: "website",
   },
 };

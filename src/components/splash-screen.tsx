@@ -16,8 +16,8 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const INDIGO = "rgba(99,102,241,";
-    const VIOLET = "rgba(139,92,246,";
+    const INDIGO = "rgba(103,232,249,";
+    const VIOLET = "rgba(217,70,239,";
     const CONNECT_D = 140;
     const N_PTS = 52;
 
@@ -107,7 +107,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
         if (p.a <= 0) continue;
         ctx!.beginPath();
         ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx!.fillStyle = INDIGO + p.a * 0.85 + ")";
+        ctx!.fillStyle = INDIGO + p.a * 0.7 + ")";
         ctx!.fill();
       }
 
@@ -206,7 +206,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#06070f",
+        background: "#05060a",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",
@@ -244,19 +244,19 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
           }}
         >
           forma
-          <span style={{ color: "#818cf8" }}>.</span>
+          <span style={{ color: "#67e8f9" }}>.</span>
         </div>
         <div
           style={{
             fontSize: "0.8rem",
-            color: "rgba(255,255,255,0.35)",
+            color: "rgba(255,255,255,0.42)",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             marginTop: "0.5rem",
             fontFamily: "inherit",
           }}
         >
-          assembling your workspace
+          assembling your company brain
         </div>
       </div>
     </div>
