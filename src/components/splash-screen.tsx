@@ -16,8 +16,8 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const INDIGO = "rgba(160,160,170,";
-    const VIOLET = "rgba(120,120,130,";
+    const INDIGO = "rgba(103,232,249,";
+    const VIOLET = "rgba(217,70,239,";
     const CONNECT_D = 140;
     const N_PTS = 52;
 
@@ -206,7 +206,7 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#ffffff",
+        background: "#05060a",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",
@@ -239,24 +239,24 @@ export function SplashScreen({ onComplete }: { onComplete: () => void }) {
             fontSize: "2.4rem",
             fontWeight: 800,
             letterSpacing: "-0.03em",
-            color: "#111",
+            color: "#fff",
             fontFamily: "inherit",
           }}
         >
           forma
-          <span style={{ color: "#111111" }}>.</span>
+          <span style={{ color: "#67e8f9" }}>.</span>
         </div>
         <div
           style={{
             fontSize: "0.8rem",
-            color: "rgba(0,0,0,0.3)",
+            color: "rgba(255,255,255,0.42)",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             marginTop: "0.5rem",
             fontFamily: "inherit",
           }}
         >
-          assembling your workspace
+          assembling your company brain
         </div>
       </div>
     </div>
